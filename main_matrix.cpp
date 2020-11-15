@@ -130,5 +130,6 @@ int main(){
 
     delete [] matrixA.data;
     delete [] matrixB.data;
+    delete [] matrixC.data;
 
 }
