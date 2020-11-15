@@ -2,9 +2,11 @@
 // Created by 黄颖盈 on 2020/11/12.
 //
 
+
 #include <chrono>
 #include "matrix_multiply.h"
 
+#define length 1000
 
 int main(){
     matrix matrixA;
@@ -68,16 +70,16 @@ int main(){
             cout << "Your input is wrong!\nn v";
         }
     } else{
-        matrixA.row=1000;
-        matrixB.row=1000;
-        matrixA.column=1000;
-        matrixB.column=1000;
-        matrixC.row=1000;
-        matrixC.column=1000;
+        matrixA.row=length;
+        matrixB.row=length;
+        matrixA.column=length;
+        matrixB.column=length;
+        matrixC.row=length;
+        matrixC.column =length;
 
-        matrixA.data=new float [1000*1000];
-        matrixB.data=new float [1000*1000];
-        matrixC.data=new float [1000*1000];
+        matrixA.data=new float [length*length];
+        matrixB.data=new float [length*length];
+        matrixC.data=new float [length*length];
 
 
         auto start = std::chrono::steady_clock::now();
@@ -116,8 +118,9 @@ int main(){
                 << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms ≈ "
                 << chrono::duration_cast<std::chrono::seconds>(end - start).count() << "s.\n";
 
+
         start = std::chrono::steady_clock::now();
-        cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans, 10000, 10000, 10000, 1.0, matrixA.data, 10000, matrixB.data, 10000, 0.0, matrixC.data, 10000);
+        cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans,length,length,length, 1.0, matrixA.data,length, matrixB.data, length, 0.0, matrixC.data, length);
         end = std::chrono::steady_clock::now();
 
         cout
@@ -125,11 +128,9 @@ int main(){
                 << chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "µs ≈ "
                 << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms ≈ "
                 << chrono::duration_cast<std::chrono::seconds>(end - start).count() << "s.\n";
-
     }
 
     delete [] matrixA.data;
     delete [] matrixB.data;
-    delete [] matrixC.data;
 
 }
