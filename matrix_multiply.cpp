@@ -13,6 +13,7 @@ float dot_product1(const float *p1, const float * p2, size_t n)
     float sum = 0.0f;
     for (size_t i = 0; i < n; i++)
         sum += (p1[i] * p2[i*n]);
+//    cout<<sum<<" ";
     return sum;
 }
 
@@ -98,18 +99,23 @@ void matrix_manual(matrix matrixA,matrix matrixB,matrix matrixC,int n){
 void matrix1(matrix matrixA, matrix matrixB,matrix matrixC,int n){
 //    *(matrixA.data)=1.0f;
 //    *(matrixB.data)=1.0f;
+//    *(matrixA.data+1)=2.0f;
+//    *(matrixB.data+n)=2.0f;
     for (int i = 0; i < matrixA.row; ++i) {
         for (int j = 0; j < matrixB.column; ++j) {
             *(matrixC.data+i*matrixA.column+j)=
             dot_product1(matrixA.data+i*matrixA.column,matrixB.data+j,n);
         }
     }
+//    output(matrixC);
 }
 
 void matrix2(matrix matrixA, matrix matrixB,matrix matrixC,int n){
     int k=0;
-    *(matrixA.data)=1.0f;
-    *(matrixB.data)=1.0f;
+//    *(matrixA.data)=1.0f;
+//    *(matrixB.data)=1.0f;
+//    *(matrixA.data+1)=2.0f;
+//    *(matrixB.data+n)=2.0f;
     for(int i=0;i<matrixA.row;i++){
         for(int j=0;j<matrixB.column;j=j+8){
             *(matrixC.data+k)=dot_product2(matrixA.data+i*n,matrixB.data+j,n);
@@ -123,23 +129,29 @@ void matrix2(matrix matrixA, matrix matrixB,matrix matrixC,int n){
             k=k+8;
         }
     }
+//    output(matrixC);
 }
 
 void matrix3(matrix matrixA, matrix matrixB,matrix matrixC,int n){
-    *(matrixA.data)=1.0f;
-    *(matrixB.data)=1.0f;
+//    *(matrixA.data)=1.0f;
+//    *(matrixB.data)=1.0f;
+//    *(matrixA.data+1)=2.0f;
+//    *(matrixB.data+n)=2.0f;
     for (int i = 0; i < matrixA.row; ++i) {
         for (int j = 0; j < matrixB.column; ++j) {
             *(matrixC.data+i*matrixA.column+j)=
             dot_product3(matrixA.data+i*matrixA.column,matrixB.data+j,n);
         }
     }
+//    output(matrixC);
 }
 
 void matrix4(matrix matrixA, matrix matrixB,matrix matrixC,int n){
     trans(matrixB);
-    *(matrixA.data)=1.0f;
-    *(matrixB.data)=1.0f;
+//    *(matrixA.data)=1.0f;
+//    *(matrixB.data)=1.0f;
+//    *(matrixA.data+1)=2.0f;
+//    *(matrixB.data+n)=2.0f;
 #pragma omp parallel
     {
 #pragma omp for
@@ -173,19 +185,21 @@ bool judge(string string){
                     count2++;
                     if (i == string.length() - 1) {
                     } else {
-                        if (string[i] == '-' || string[i] == '+') {
+                        if (string[i+1] == '-' || string[i+1] == '+'||isdigit(string[i+1])) {
                         } else {
                             return false;
                         }
+                        i++;
                     }
                 } else if (string[i] == 'e') {
                     count3++;
                     if (i == string.length() - 1) {
                     } else {
-                        if (string[i] == '-' || string[i] == '+') {
+                        if (string[i+1] == '-' || string[i+1] == '+'||isdigit(string[i+1])) {
                         } else {
                             return false;
                         }
+                        i++;
                     }
                 } else {
                     return false;
@@ -206,32 +220,31 @@ bool judge(string string){
                 count1++;
             }else if (string[i]=='E') {
                 count2++;
-                if (i==string.length()-1){
-                }else{
-                    if (string[i]=='-'||string[i]=='+'){
-                    } else{
+                if (i == string.length() - 1) {
+                } else {
+                    if (string[i + 1] == '-' || string[i + 1] == '+' || isdigit(string[i + 1])) {
+                    } else {
                         return false;
                     }
+                    i++;
                 }
-            }else if (string[i]=='e'){
+            }else if (string[i]=='e') {
                 count3++;
-                if (i==string.length()-1){
-
-                }else{
-                    if (string[i]=='-'||string[i]=='+'){
-                    } else{
+                if (i == string.length() - 1) {
+                } else {
+                    if (string[i + 1] == '-' || string[i + 1] == '+' || isdigit(string[i + 1])) {
+                    } else {
                         return false;
                     }
+                    i++;
                 }
-            } else{
-                return false;
-            }
-            if (count1<=1&&count2<=1&&count3<=1){
-
             }else{
                 return false;
             }
-
+            if (count1<=1&&count2<=1&&count3<=1){
+            }else{
+                return false;
+            }
         }
     } else{
         return false;
@@ -250,11 +263,12 @@ void trans(matrix matrix){
 }
 
 void output(matrix matrix){
-    for (int i = 0; i < matrix.row; ++i) {
-        for (int j = 0; j < matrix.column; ++j) {
-            cout<<*(matrix.data+i*matrix.column+j)<<" ";
+    for (int i = 0; i < matrix.row*matrix.column; ++i) {
+        cout<<matrix.data[i]<<" ";
+        if ((i+1)%matrix.column==0){
+            cout<<endl;
         }
-        cout<<endl;
+
     }
 }
 
